@@ -340,7 +340,6 @@
         </g>
       </g>
     </svg>
-
     <span>{{ title }} app is running!</span>
    
     <svg id="rocket-smoke" xmlns="http://www.w3.org/2000/svg" width="516.119" height="1083.632" viewBox="0 0 516.119 1083.632">
@@ -351,18 +350,20 @@
   </div>
   <div class="card-container">
     <table>
-     <tr><td>   <label for="sccy">Source ccy:</label>  </td> <td>   <select #fromCurrency (change)="onSourceSelected()" class="form-control">  
+     <tr><td>   <label for="sccy">Source ccy:</label>  </td> <td>   <select #fromCurrency id="fromCurrency" (change)="onSourceSelected()" class="form-control">  
        <option disabled selected>Select source currency</option>  
  
-       <option *ngFor="let currency of currencyList">{{currency}}</option>  
+       <option *ngFor="let currency of currencyListObj" value="{{currency.value}}">{{currency.id}}</option>  
    </select>  </td></tr>
-     <tr><td> <label for="tccy">Target ccy:</label></td> <td><select #toCurrency class="form-control" (change)="onTargetSelected()">  
+     <tr><td> <label for="tccy">Target ccy:</label></td> <td><select #toCurrency id="toCurrency" class="form-control" (change)="onTargetSelected()">  
        <option disabled selected>Select target currency</option>   
-       <option *ngFor="let currency of currencyList">{{currency}}</option>  
+       <option *ngFor="let currency of currencyListObj" value="{{currency.value}}">{{currency.id}}</option>  
    </select></td></tr>
-     <tr><td>amount</td> <td>  <input #amount  [(ngModel)]="amount" type="text" ></td></tr>
-     <tr><td colspan="2"><button type="button" (click)="onClickMe()">Click me!</button></td></tr>
-     <tr><td><label >Result:</label></td><td>{{result}}</td></tr>
+     <tr><td>amount</td> <td>  <input   type="text" #amount id="amount"></td></tr>
+     <tr><td colspan="2">
+      <button (click)="onClickMe()" id="submitButton">Click</button>
+    </td></tr>
+     <tr><td><label >Result:</label></td><td> <div  id="result"><label #resValue id="resValue"> </label></div></td></tr>
     </table>
    </div>
  

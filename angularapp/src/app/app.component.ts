@@ -1,4 +1,4 @@
-import { Component,ElementRef, ViewChild  } from '@angular/core';
+import { Component,ElementRef, ViewChild ,Renderer2 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-root',
@@ -8,59 +8,49 @@ import { FormControl } from '@angular/forms';
 
 export class AppComponent {
   title = 'CurrencyApp';
-  amount :any;
-  result :any;
+  result1 :any;
 
-  currencyExange :any = {
-    USD: 1.126735,
-    GBP: 0.876893,
-    INR: 79.6770
-}
+
 
   @ViewChild('fromCurrency') fromCurrency!: ElementRef;
   @ViewChild('toCurrency') toCurrency!: ElementRef;
+  @ViewChild("amount") amount!: ElementRef;
+  @ViewChild("resValue") resValue!: ElementRef;
+ 
+  constructor(private renderer: Renderer2) {}
 
-  currencyList: any = ['USD', 'GBP', 'INR'] 
+  currencyListObj:any=  [ { "id":"USD",  "value": 1.126735}, { "id":"GBP", "value":0.876893}, { "id":"INR", "value":79.677056}];
+
   onClickMe() {
-    if(this.convertFrom == "")
+    if(this.convertFrom == ""){
     return;
-    if(this.convertTo == "")
+    }
+    
+    if(this.convertTo == ""){
     return;
+    }
    
-    let resultTest = this.convert(this.amount, this.convertFrom, this.convertTo);
-    resultTest = parseFloat(resultTest.toFixed(2)); // result to 2 decimal places
-      this.result = `${this.amount} ${this.convertFrom} = ${resultTest} ${this.convertTo}`;
+    let resultTest = this.convert(this.amount.nativeElement.value, this.convertFrom, this.convertTo);
+ 
+      //this.result = resultTest;
+      this.renderer.setProperty(this.resValue.nativeElement, 'innerText', resultTest);
   }
   
 
-  convert(amount: number, from: string, to: string): number {
-    let fromConversionCoefficient: number =this.getConversionCoefficient(from);
+  convert(amount: number, from: number, to: number): string {
+   let am= Math.round((to / from) * amount);
 
-    let toConversionCoefficient: number = this.getConversionCoefficient(to);
-
-    return (toConversionCoefficient / fromConversionCoefficient) * amount;
+    return  (am).toFixed(2).toString();
   }
  
-  getConversionCoefficient(cur: string){
-   let ret=0;
-    switch(cur){
-      case "USD": ret =this.currencyExange.USD;
-      break;
-      case "GBP": ret =this.currencyExange.GBP;
-      break;
-      case "INR": ret =this.currencyExange.INR;
-      break;
-    }
 
-    return ret;
-  }
-	convertFrom = '';
+	convertFrom :any;
 	onSourceSelected():void {
-		this.convertFrom = this.fromCurrency.nativeElement.value;
+		this.convertFrom = parseFloat( this.fromCurrency.nativeElement.value);
 	}
 
-  convertTo = '';
+  convertTo :any;
 	onTargetSelected():void {
-		this.convertTo = this.toCurrency.nativeElement.value;
+		this.convertTo = parseFloat(this.toCurrency.nativeElement.value);
 	}
 }
