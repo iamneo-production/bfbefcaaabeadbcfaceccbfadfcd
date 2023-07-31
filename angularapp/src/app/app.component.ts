@@ -17,7 +17,7 @@ export class AppComponent {
     INR: 79.6770
 }
 
-  @ViewChild('fromCurrency') scy!: ElementRef;
+  @ViewChild('fromCurrency') fromCurrency!: ElementRef;
   @ViewChild('toCurrency') toCurrency!: ElementRef;
 
   currencyList: any = ['USD', 'GBP', 'INR'] 
@@ -56,7 +56,7 @@ export class AppComponent {
   }
 	convertFrom = '';
 	onSourceSelected():void {
-		this.convertFrom = this.scy.nativeElement.value;
+		this.convertFrom = this.fromCurrency.nativeElement.value;
 	}
 
   convertTo = '';
